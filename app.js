@@ -5,7 +5,6 @@ import Transaction from 'ethereumjs-tx'
 
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.WEB3))
 
-console.log(process.env.PRIVATE_KEY)
 const CONSTANTS = {
   networkId: 1,
   from: process.env.FROM,
@@ -114,17 +113,13 @@ server.post('/contract', opts, async (request, reply) => {
 
 server.post('/*', opts, async (request, reply) => {
   const commands = request.params['*'].split('/')
-  console.log(request.body)
 
   let func = web3.eth
   let args = request.body.args || []
 
   for (let part of commands) {
-    console.log('get part:', part)
     func = func[part]
   }
-
-  console.log(func)
 
   if (!func) {
     return reply.send({
