@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "babel-node app.js",
     "test": "make test"
   },
   "repository": {
