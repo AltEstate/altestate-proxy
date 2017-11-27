@@ -21,7 +21,10 @@ const opts = {
 
 server.post('/*', opts, async (request, reply) => {
   const commands = request.params['*'].split('/')
+  console.log(request.body)
+
   let func = web3.eth
+  let args = request.body.args || []
 
   for (let part of commands) {
     console.log('get part:', part)
@@ -30,12 +33,16 @@ server.post('/*', opts, async (request, reply) => {
 
   console.log(func)
 
-  func((error, result) => {
+  func(...args, (error, result) => {
     if (error) {
       return reply.send(error)
     }
 
-    return reply.send(result)
+    return reply.send(
+      {
+        result,
+        "statusCode": 200
+    })
   })
 }) 
 
