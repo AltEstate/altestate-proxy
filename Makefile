@@ -1,7 +1,7 @@
 abi:
 	@mkdir abi
 	@cp -R -f \
-		../altestate-3/build/contracts/* \
+		../build/contracts/* \
 		$(shell pwd)/abi
 
 dev: abi
