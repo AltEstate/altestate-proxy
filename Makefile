@@ -5,6 +5,8 @@ PRIVATE_KEY:=	"0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1
 GAS_PRICE:=		"1000000"
 GAS_LIMIT:=		"5000000"
 
+.PHONY: abi
+
 variables: 
 	@echo Contracts Path:		$(value CONTRACTS)
 	@echo Node: 						$(value NODE)
@@ -14,9 +16,9 @@ variables:
 	@echo Gas Limit:				$(value GAS_LIMIT)
 
 abi:
-	rm -rf $(shell pwd)/abi/
-	mkdir $(shell pwd)/abi
-	cp -R -f \
+	@rm -rf $(shell pwd)/abi
+	@mkdir $(shell pwd)/abi
+	@cp -R -f \
 		$(shell pwd)/$(value CONTRACTS)/* \
 		$(shell pwd)/abi
 
