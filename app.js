@@ -71,8 +71,14 @@ server.post('/contract', opts, async (request, reply) => {
     }) 
   }
 
-  const json = require(`./abi/${request.body.contract}`)
-  const address = request.body.at || json.networks[CONSTANTS.networkId].address
+  const json = require(`./abi/${request.body.contract}.json`)
+  console.log(json)
+  try {
+    const address = request.body.at || json.networks[CONSTANTS.networkId].address
+  } catch (e) {
+    console.log(CONSTANTS.networkId)
+    throw 't'
+  }
   const method = request.body.method
   let args = request.body.args || []
   const contract = new web3.eth.Contract(json.abi, address)
