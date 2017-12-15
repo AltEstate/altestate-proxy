@@ -1,7 +1,7 @@
 CONTRACTS:=		"../altestate/build/contracts"
 NODE:=				"http://localhost:8545"
 FROM:=				"0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1"
-PRIVATE_KEY:=	"0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d"
+PRIVATE_KEY:=	"4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d"
 GAS_PRICE:=		"1000000"
 GAS_LIMIT:=		"5000000"
 

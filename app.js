@@ -18,7 +18,10 @@ web3.eth.net.getId((err, result) => {
 })
 
 async function makeTransaction(to, value, data, gasLimit, gasPrice) {
+  console.log("push1")
   const nonce = utils.bufferToHex(await web3.eth.getTransactionCount(CONSTANTS.from))
+
+  console.log("push1")
   const tx = new Transaction({
     to,
     value,
@@ -28,8 +31,11 @@ async function makeTransaction(to, value, data, gasLimit, gasPrice) {
     nonce
   }, CONSTANTS.chainId)
 
+  console.log(CONSTANTS.privateKey)
   tx.sign(CONSTANTS.privateKey)
   const raw = `0x${tx.serialize().toString('hex')}`
+
+  console.log(raw)
 
   return new Promise((resolve, reject) => {
     web3.eth.sendSignedTransaction(raw)
@@ -53,6 +59,39 @@ const opts = {
     }
   }
 }
+
+server.post('/events', opts, async (request, reply) => {
+  if (!request.body.contract) {
+    return reply.send({
+      error: 'Internal Server Error',
+      message: `contract name is required`,
+      statusCode: 500
+    })
+  }
+  if (!request.body.event) {
+    return reply.send({
+      error: 'Internal Server Error',
+      message: `contract event is required`,
+      statusCode: 500
+    }) 
+  }
+  const json = require(`./abi/${request.body.contract}.json`)
+  const address = request.body.at || json.networks[CONSTANTS.networkId].address
+  const event = request.body.event
+  let filter = request.body.filter || {}
+  let fromBlock = request.body.from || 0
+
+  const contract = new web3.eth.Contract(json.abi, address)
+  const events = await contract.getPastEvents(event, {
+    filter, 
+    fromBlock
+  })
+
+  reply.send({
+    statusCode: 200,
+    result: events
+  })
+})
 
 server.post('/contract', opts, async (request, reply) => {
   if (!request.body.contract) {
